@@ -4,10 +4,14 @@ import ReactApexChart, { Props as ApexChartProps } from "react-apexcharts";
 const CHART_TYPE: ApexChartProps["type"] = "line";
 const WIDTH: number = 800;
 const HEIGHT: number = 300;
-const Chart: FC = () => {
+
+const Chart: FC<ChartProps> = ({ series, categories }) => {
   return (
     <ReactApexChart
-      options={options}
+      options={{
+        ...options,
+        ...{ xaxis: { ...options.xaxis, categories } },
+      }}
       series={series}
       type={CHART_TYPE}
       width={WIDTH}
@@ -16,18 +20,16 @@ const Chart: FC = () => {
   );
 };
 
-const series: ApexChartProps["series"] = [
-  {
-    name: "Daily Evolution",
-    data: [30, 40, 25, 50, 49, 21],
-  },
-];
+interface ChartProps {
+  series: ApexChartProps["series"];
+  categories: string[];
+}
 
 const options: ApexChartProps = {
   stroke: { curve: "smooth" },
   markers: { size: 6, strokeWidth: undefined },
   xaxis: {
-    categories: ["08:00", "11:00", "14:00", "17:00", "20:00", "23:00"],
+    categories: [],
     axisBorder: { show: false },
     axisTicks: { show: false },
     labels: { style: { colors: "#FFF", fontSize: "1rem" } },
@@ -35,14 +37,6 @@ const options: ApexChartProps = {
   },
   yaxis: {
     show: false,
-    // labels: {
-    //   style: {
-    //     colors: "#FFF",
-    //     fontSize: "1rem",
-    //   },
-    //   formatter: (value) => `${value}º`,
-    //   offsetX: -15,
-    // },
   },
   grid: { show: false },
   dataLabels: {
