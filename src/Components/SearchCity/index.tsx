@@ -1,17 +1,45 @@
-import { ChangeEvent, FC, useContext } from "react";
+import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import styled from "styled-components";
 import {
   WeatherContext,
   WeatherContextType,
 } from "../../Contexts/WeatherContext";
+import { SearchCities } from "../../Services/OpenWeather";
+import { WeatherGeocodingCity } from "../../Services/OpenWeather/types";
+import CitiesList from "./Components/CitiesList";
 
 const SearchCity: FC = () => {
-  const { setCurrentCity } = useContext(WeatherContext) as WeatherContextType;
+  const { setCurrentCity, currentCity } = useContext(
+    WeatherContext
+  ) as WeatherContextType;
+
+  const [cities, setCities] = useState<WeatherGeocodingCity[]>([]);
+
   const searchCities = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('event.target.value', event.target.value);
-    setCurrentCity(event.target.value);
+    // setCurrentCity(event.target.value);
+    const {
+      target: { value },
+    } = event;
+
+    SearchCities(value).then(setCities).catch(console.error);
   };
+
+  const [fullCityName, setFullCityName] = useState<string>("");
+
+  useEffect(() => {
+    setFullCityName(
+      currentCity
+        ? `${currentCity?.name}, ${currentCity?.state}, ${currentCity?.country}`
+        : ""
+    );
+  }, [currentCity, setFullCityName]);
+
+  useEffect(() => {
+    console.log("fullCityName:", fullCityName);
+  }, [fullCityName]);
+
+  
   return (
     <Container>
       <FormContainer>
@@ -21,7 +49,9 @@ const SearchCity: FC = () => {
           debounceTimeout={800}
           onChange={searchCities}
           element={Input}
+          value={fullCityName}
         />
+        {cities && <CitiesList cities={cities} onSelect={setCurrentCity} />}
       </FormContainer>
     </Container>
   );

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { WeatherDailyResponse } from "../../../../Services/OpenWeather";
 import dayjs from "dayjs";
+import { WeatherDailyResponse } from "../../../../Services/OpenWeather/types";
 
 const weatherLink = (icon: string) =>
   `http://openweathermap.org/img/wn/${icon}@2x.png`;

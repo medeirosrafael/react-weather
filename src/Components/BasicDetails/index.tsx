@@ -27,6 +27,7 @@ const BasicDetails = () => {
 
   const renderTemperatureUnit = (unit: TemperatureUnitInterface) => (
     <TemperatureUnit
+      key={unit.type}
       unit={unit}
       selected={currentUnit?.type === unit?.type}
       onClick={setCurrentUnit}
@@ -44,7 +45,7 @@ const BasicDetails = () => {
           </TemperatureOptionsContainer>
         </TemperatureContainer>
         <WeekDayClimate
-          day={dayjs.unix(currentWeather.dt).format('dddd')}
+          day={dayjs.unix(currentWeather.dt).format("dddd")}
           condition={currentWeather.weather[0].description}
         />
       </Wrapper>

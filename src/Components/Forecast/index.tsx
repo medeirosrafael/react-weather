@@ -3,7 +3,7 @@ import {
   WeatherContext,
   WeatherContextType,
 } from "../../Contexts/WeatherContext";
-import { WeatherDailyResponse } from "../../Services/OpenWeather";
+import { WeatherDailyResponse } from "../../Services/OpenWeather/types";
 import WeatherCard from "./Components/WeatherCard";
 import { Container, ContainerTitle, Wrapper } from "./styles";
 

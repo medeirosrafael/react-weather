@@ -1,11 +1,11 @@
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
+import { LoadCurrentWeather, LoadForecast } from "../../Services/OpenWeather";
 import {
   CurrentWeatherResponse,
-  LoadCurrentWeather,
-  LoadForecast,
   WeatherDailyResponse,
+  WeatherGeocodingCity,
   WeatherHourlyResponse,
-} from "../../Services/OpenWeather";
+} from "../../Services/OpenWeather/types";
 import {
   DEFAULT_UNIT,
   TemperatureUnitInterface,
@@ -17,7 +17,8 @@ export type WeatherContextType = {
   setCurrentUnit: (unit: TemperatureUnitInterface) => void;
   currentDaily: WeatherDailyResponse[];
   currentHourly: WeatherHourlyResponse[];
-  setCurrentCity: (city: string) => void;
+  setCurrentCity: (city: WeatherGeocodingCity) => void;
+  currentCity?: WeatherGeocodingCity;
 };
 
 export const WeatherContext = createContext<WeatherContextType | null>(null);
@@ -27,7 +28,9 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
     CurrentWeatherResponse | undefined
   >(undefined);
 
-  const [currentCity, setCurrentCity] = useState<string | null>(null);
+  const [currentCity, setCurrentCity] = useState<WeatherGeocodingCity | null>(
+    null
+  );
 
   const [currentUnit, setCurrentUnit] =
     useState<TemperatureUnitInterface>(DEFAULT_UNIT);
@@ -39,7 +42,8 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
 
   useEffect(() => {
     if (!currentCity) return;
-    LoadCurrentWeather({ city: currentCity, unit: currentUnit.type }).then(
+    const { lat, lon } = currentCity;
+    LoadCurrentWeather({ lat, lon, unit: currentUnit.type }).then(
       setCurrentWeather
     );
   }, [currentCity, currentUnit, setCurrentWeather]);
@@ -60,6 +64,7 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
     currentWeather?.coord?.lat,
     currentWeather?.coord?.lon,
     currentUnit,
+    currentCity,
     setCurrentDaily,
     setCurrentHourly,
   ]);
