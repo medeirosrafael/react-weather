@@ -84,6 +84,7 @@ export const ENDPOINTS = {
   CURRENT_WEATHER: `${process.env.REACT_APP_WEATHER_API_URL}/data/2.5/weather`,
   ONECALL_WEATHER: `${process.env.REACT_APP_WEATHER_API_URL}/data/2.5/onecall`,
   GEOCODING: `${process.env.REACT_APP_WEATHER_API_URL}/geo/1.0/direct`,
+  ICON_IMAGE: `${process.env.REACT_APP_WEATHER_ICON_URL}`
 };
 
 export const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;

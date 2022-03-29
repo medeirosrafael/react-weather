@@ -44,7 +44,7 @@ const LoadForecast = async ({
     .then(extractForecast);
 };
 
-const WeatherIcon = (icon: string): string => `${process.env.REACT_APP_WEATHER_ICON_URL}/${icon}@2x.png`
+const WeatherIcon = (icon: string): string => `${ENDPOINTS.ICON_IMAGE}/${icon}@2x.png`
 
 const extractForecast = (
   response: LoadForecastResponse
