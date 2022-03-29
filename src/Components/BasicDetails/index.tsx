@@ -27,6 +27,7 @@ const BasicDetails = () => {
 
   const renderTemperatureUnit = (unit: TemperatureUnitInterface) => (
     <TemperatureUnit
+      key={unit.type}
       unit={unit}
       selected={currentUnit?.type === unit?.type}
       onClick={setCurrentUnit}
