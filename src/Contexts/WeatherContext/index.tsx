@@ -28,9 +28,9 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
     CurrentWeatherResponse | undefined
   >(undefined);
 
-  const [currentCity, setCurrentCity] = useState<WeatherGeocodingCity | null>(
-    null
-  );
+  const [currentCity, setCurrentCity] = useState<
+    WeatherGeocodingCity | undefined
+  >(undefined);
 
   const [currentUnit, setCurrentUnit] =
     useState<TemperatureUnitInterface>(DEFAULT_UNIT);
@@ -49,10 +49,8 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
   }, [currentCity, currentUnit, setCurrentWeather]);
 
   useEffect(() => {
-    if (!currentWeather?.coord?.lat || !currentWeather?.coord?.lon) return;
-
-    const lat = currentWeather.coord.lat;
-    const lon = currentWeather.coord.lon;
+    if (!currentCity) return;
+    const { lat, lon } = currentCity;
 
     LoadForecast({ lat, lon, unit: currentUnit.type }).then(
       ({ daily, hourly }) => {
@@ -60,14 +58,7 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
         setCurrentHourly(hourly);
       }
     );
-  }, [
-    currentWeather?.coord?.lat,
-    currentWeather?.coord?.lon,
-    currentUnit,
-    currentCity,
-    setCurrentDaily,
-    setCurrentHourly,
-  ]);
+  }, [currentUnit, currentCity, setCurrentDaily, setCurrentHourly]);
 
   return (
     <WeatherContext.Provider
@@ -78,6 +69,7 @@ const WeatherProvider: FC<ReactNode> = ({ children }) => {
         currentDaily,
         currentHourly,
         setCurrentCity,
+        currentCity,
       }}
     >
       {children}

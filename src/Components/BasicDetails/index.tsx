@@ -19,11 +19,10 @@ import {
 } from "./styles";
 
 const BasicDetails = () => {
-  const { currentWeather, setCurrentUnit, currentUnit } = useContext(
-    WeatherContext
-  ) as WeatherContextType;
+  const { currentWeather, setCurrentUnit, currentUnit, currentCity } =
+    useContext(WeatherContext) as WeatherContextType;
 
-  if (!currentWeather) return null;
+  if (!currentWeather || !currentCity) return null;
 
   const renderTemperatureUnit = (unit: TemperatureUnitInterface) => (
     <TemperatureUnit
@@ -37,7 +36,7 @@ const BasicDetails = () => {
   return (
     <Container>
       <Wrapper>
-        <CityName city={currentWeather.name} />
+        <CityName city={`${currentCity.name}, ${currentCity.state}`} />
         <TemperatureContainer>
           <TemperatureValue value={currentWeather.main.temp.toFixed(0)} />
           <TemperatureOptionsContainer>

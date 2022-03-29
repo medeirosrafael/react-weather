@@ -17,7 +17,6 @@ const SearchCity: FC = () => {
   const [cities, setCities] = useState<WeatherGeocodingCity[]>([]);
 
   const searchCities = (event: ChangeEvent<HTMLInputElement>) => {
-    // setCurrentCity(event.target.value);
     const {
       target: { value },
     } = event;
@@ -35,11 +34,6 @@ const SearchCity: FC = () => {
     );
   }, [currentCity, setFullCityName]);
 
-  useEffect(() => {
-    console.log("fullCityName:", fullCityName);
-  }, [fullCityName]);
-
-  
   return (
     <Container>
       <FormContainer>
