@@ -1,8 +1,14 @@
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useContext } from "react";
+import {
+  WeatherContext,
+  WeatherContextType,
+} from "../../Contexts/WeatherContext";
+import TEMPERATURE_UNITS, {
+  TemperatureUnitInterface,
+} from "../../Services/TemperatureUnits";
 import CityName from "./Components/CityName";
-import TemperatureUnit, {
-  TemperatureUnitProps,
-} from "./Components/TemperatureUnit";
+import TemperatureUnit from "./Components/TemperatureUnit";
 import TemperatureValue from "./Components/TemperatureValue";
 import WeekDayClimate from "./Components/WeekDayCondition";
 import {
@@ -12,43 +18,35 @@ import {
   Wrapper,
 } from "./styles";
 
-const Units: TemperatureUnitProps[] = [
-  {
-    unit: "C",
-    helperText: "Change temperature to Celsius",
-  },
-  {
-    unit: "F",
-    helperText: "Change temperature to Fahrenheit",
-  },
-];
-
 const BasicDetails = () => {
-  const [selectedUnit, setSelectedUnit] = useState<string>("C");
+  const { currentWeather, setCurrentUnit, currentUnit } = useContext(
+    WeatherContext
+  ) as WeatherContextType;
 
-  const renderTemperatureUnit = ({
-    unit,
-    helperText,
-  }: TemperatureUnitProps) => (
+  if (!currentWeather) return null;
+
+  const renderTemperatureUnit = (unit: TemperatureUnitInterface) => (
     <TemperatureUnit
       unit={unit}
-      helperText={helperText}
-      selected={selectedUnit === unit}
-      onClick={setSelectedUnit}
+      selected={currentUnit?.type === unit?.type}
+      onClick={setCurrentUnit}
     />
   );
 
   return (
     <Container>
       <Wrapper>
-        <CityName city="São José do Rio Preto, BR" />
+        <CityName city={currentWeather.name} />
         <TemperatureContainer>
-          <TemperatureValue value="32" />
+          <TemperatureValue value={currentWeather.main.temp.toFixed(0)} />
           <TemperatureOptionsContainer>
-            {Units.map(renderTemperatureUnit)}
+            {TEMPERATURE_UNITS.map(renderTemperatureUnit)}
           </TemperatureOptionsContainer>
         </TemperatureContainer>
-        <WeekDayClimate day="Thursday" condition="light rain" />
+        <WeekDayClimate
+          day={dayjs.unix(currentWeather.dt).format('dddd')}
+          condition={currentWeather.weather[0].description}
+        />
       </Wrapper>
     </Container>
   );

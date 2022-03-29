@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
 
 export const TemperatureOptionsContainer = styled(Wrapper)`
   justify-content: space-between;
+  margin-left: 1rem;
 `;
 
 export const TemperatureContainer = styled.div`
