@@ -1,11 +1,9 @@
-import { URLSearchParams } from "url";
-
 type LoadCurrentWeatherType = { city: string; unit: string };
 type LoadForecastType = { lat: number; lon: number; unit: string };
 
 const ENDPOINTS = {
-  CURRENT_WEATHER: `${process.env.WEATHER_API_URL}/weather`,
-  ONECALL_WEATHER: `${process.env.WEATHER_API_URL}/weather`,
+  CURRENT_WEATHER: `${process.env.REACT_APP_WEATHER_API_URL}/weather`,
+  ONECALL_WEATHER: `${process.env.REACT_APP_WEATHER_API_URL}/weather`,
 };
 
 const LoadCurrentWeather = async ({
@@ -15,7 +13,7 @@ const LoadCurrentWeather = async ({
   const params = new URLSearchParams({
     q: city,
     units: unit,
-    APPID: process.env.WEATHER_API_KEY,
+    APPID: process.env.REACT_APP_WEATHER_API_KEY,
   } as any).toString();
 
   return fetch(`${ENDPOINTS.CURRENT_WEATHER}?${params}`).then((res) =>
@@ -32,7 +30,7 @@ const LoadForecast = async ({
     lat,
     lon,
     units: unit,
-    APPID: process.env.WEATHER_API_KEY,
+    APPID: process.env.REACT_APP_WEATHER_API_KEY,
     exclude: "current,minutely",
   } as any).toString();
   return fetch(`${ENDPOINTS.ONECALL_WEATHER}?${params}`)
@@ -48,14 +46,14 @@ const extractForecast = (
 });
 
 const extractDaily = (response: LoadForecastResponse): WeatherDailyResponse[] =>
-  response.daily
-    .slice(0, 5)
-    .map((daily) => ({ ...daily, timezone: response.timezone }));
+  response?.daily
+    ?.slice(0, 5)
+    ?.map((daily) => ({ ...daily, timezone: response.timezone }));
 
 const extractHourly = (
   response: LoadForecastResponse
 ): WeatherHourlyResponse[] =>
-  response.hourly.slice(0, 6).map((hourly) => ({
+  response?.hourly?.slice(0, 6).map((hourly) => ({
     ...hourly,
     timezone: response.timezone,
   }));
