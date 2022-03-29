@@ -2,9 +2,9 @@ import { FC } from "react";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import { WeatherDailyResponse } from "../../../../Services/OpenWeather/types";
+import { WeatherIcon } from "../../../../Services/OpenWeather";
 
-const weatherLink = (icon: string) =>
-  `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
 const formatDate = (date: number, timezone: string) =>
   dayjs.unix(date).tz(timezone).format("ddd DD");
 
@@ -13,7 +13,7 @@ const WeatherCard: FC<WeatherCardProps> = ({ forecast }) => {
     <Card>
       <Day>{formatDate(forecast.dt, forecast.timezone)}</Day>
       <img
-        src={weatherLink(forecast.weather[0].icon)}
+        src={WeatherIcon(forecast.weather[0].icon)}
         alt={forecast.weather[0].description}
         width="50"
         height="50"

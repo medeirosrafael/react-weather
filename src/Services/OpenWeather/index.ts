@@ -43,6 +43,9 @@ const LoadForecast = async ({
     .then((res) => res.json())
     .then(extractForecast);
 };
+
+const WeatherIcon = (icon: string): string => `${process.env.REACT_APP_WEATHER_ICON_URL}/${icon}@2x.png`
+
 const extractForecast = (
   response: LoadForecastResponse
 ): LoadForecastResponse => ({
@@ -73,4 +76,4 @@ const SearchCities = async (q: string): Promise<WeatherGeocodingCity[]> => {
   return fetch(`${ENDPOINTS.GEOCODING}?${params}`).then((res) => res.json());
 };
 
-export { LoadCurrentWeather, LoadForecast, SearchCities };
+export { LoadCurrentWeather, LoadForecast, SearchCities, WeatherIcon };
