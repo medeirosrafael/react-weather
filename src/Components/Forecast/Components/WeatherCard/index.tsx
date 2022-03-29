@@ -1,26 +1,37 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { WeatherDailyResponse } from "../../../../Services/OpenWeather";
+import dayjs from "dayjs";
 
-const WeatherCard: FC = () => {
+const weatherLink = (icon: string) =>
+  `http://openweathermap.org/img/wn/${icon}@2x.png`;
+const formatDate = (date: number, timezone: string) =>
+  dayjs.unix(date).tz(timezone).format("ddd DD");
+
+const WeatherCard: FC<WeatherCardProps> = ({ forecast }) => {
   return (
     <Card>
-      <Day>Fri 29</Day>
+      <Day>{formatDate(forecast.dt, forecast.timezone)}</Day>
       <img
-        src="http://openweathermap.org/img/wn/04d@2x.png"
-        alt="chovendo"
+        src={weatherLink(forecast.weather[0].icon)}
+        alt={forecast.weather[0].description}
         width="50"
         height="50"
       />
       <TempContainers>
-        <MaxTemp>21º</MaxTemp>
-        <MinTemp>10º</MinTemp>
+        <MaxTemp>{forecast.temp.max.toFixed(0)}º</MaxTemp>
+        <MinTemp>{forecast.temp.min.toFixed(0)}º</MinTemp>
       </TempContainers>
-      <Condition>light rain</Condition>
+      <Condition>{forecast.weather[0].description}</Condition>
     </Card>
   );
 };
 
 export default WeatherCard;
+
+interface WeatherCardProps {
+  forecast: WeatherDailyResponse;
+}
 
 const Card = styled.div`
   display: flex;
