@@ -1,24 +1,24 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { TemperatureUnitInterface } from "../../../../Services/TemperatureUnits";
 
 export interface TemperatureUnitProps extends TemperatureOptionProps {
-  unit: string;
-  helperText: string;
-  onClick?: (unit: string) => void;
+  unit: TemperatureUnitInterface;
+  onClick?: (unit: TemperatureUnitInterface) => void;
+  selected: boolean;
 }
 
 const TemperatureUnit: FC<TemperatureUnitProps> = ({
   selected,
   unit,
-  helperText,
   onClick = () => {},
 }: TemperatureUnitProps) => (
   <TemperatureButton
-    title={helperText}
+    title={unit?.helperText}
     selected={selected}
     onClick={() => onClick(unit)}
   >
-    {unit}
+    {unit?.label}
   </TemperatureButton>
 );
 
