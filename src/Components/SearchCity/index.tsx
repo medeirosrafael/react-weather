@@ -1,12 +1,27 @@
-import { FC } from "react";
+import { ChangeEvent, FC, useContext } from "react";
+import { DebounceInput } from "react-debounce-input";
 import styled from "styled-components";
+import {
+  WeatherContext,
+  WeatherContextType,
+} from "../../Contexts/WeatherContext";
 
 const SearchCity: FC = () => {
+  const { setCurrentCity } = useContext(WeatherContext) as WeatherContextType;
+  const searchCities = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log('event.target.value', event.target.value);
+    setCurrentCity(event.target.value);
+  };
   return (
     <Container>
       <FormContainer>
         <Label>City Name</Label>
-        <Input type="text" />
+        <DebounceInput
+          minLength={2}
+          debounceTimeout={800}
+          onChange={searchCities}
+          element={Input}
+        />
       </FormContainer>
     </Container>
   );
@@ -20,7 +35,7 @@ const Input = styled.input`
   background-color: #232229;
   width: 600px;
   padding: 0.75rem;
-  color: #F48403;
+  color: #f48403;
   font-size: 1rem;
   @media only screen and (max-width: 768px) {
     width: 90vw;
