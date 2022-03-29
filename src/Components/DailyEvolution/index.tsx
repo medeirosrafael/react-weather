@@ -20,17 +20,20 @@ const DailyEvolution: FC = () => {
   const [currentCategories, setCurrentCategories] = useState<string[]>([]);
 
   useEffect(() => {
-    setCurrentSerie([
-      {
-        name: SERIE_NAME,
-        data: currentHourly.map(({ temp }) => parseInt(temp.toFixed(0), 10)),
-      },
-    ]);
-    setCurrentCategories(
-      currentHourly.map(({ dt, timezone }) =>
-        dayjs.unix(dt).tz(timezone).format("HH:mm")
-      )
-    );
+    if (currentHourly) {
+      setCurrentSerie([
+        {
+          name: SERIE_NAME,
+          data: currentHourly.map(({ temp }) => parseInt(temp.toFixed(0), 10)),
+        },
+      ]);
+      setCurrentCategories(
+        currentHourly.map(({ dt, timezone }) =>
+          dayjs.unix(dt).tz(timezone).format("HH:mm")
+        )
+      );
+    }
+
   }, [currentHourly, setCurrentSerie, setCurrentCategories]);
 
   if (!currentHourly?.length) return null;
