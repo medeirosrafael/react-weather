@@ -68,6 +68,7 @@ const extractHourly = (
   }));
 
 const SearchCities = async (q: string): Promise<WeatherGeocodingCity[]> => {
+  if(!q) throw new Error('Nothing to search');
   const params = new URLSearchParams({
     q,
     APPID: WEATHER_API_KEY,

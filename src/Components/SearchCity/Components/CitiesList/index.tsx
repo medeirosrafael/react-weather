@@ -2,11 +2,16 @@ import { FC } from "react";
 import styled from "styled-components";
 import { WeatherGeocodingCity } from "../../../../Services/OpenWeather/types";
 
-const CitiesList: FC<CitiesListProps> = ({ cities, onSelect }) => {
-  const renderListItem = (city: WeatherGeocodingCity) => (
+const CitiesList: FC<CitiesListProps> = ({
+  cities,
+  onSelect,
+  currentIndex,
+}) => {
+  const renderListItem = (city: WeatherGeocodingCity, index: number) => (
     <ListItem
       key={`${city.lat.toString()},${city.lon.toString()}`}
       onClick={() => onSelect(city)}
+      selected={currentIndex === index}
     >
       {city.name}, {city.state}, {city.country}
     </ListItem>
@@ -19,6 +24,7 @@ export default CitiesList;
 export interface CitiesListProps {
   cities: WeatherGeocodingCity[];
   onSelect: (city: WeatherGeocodingCity) => void;
+  currentIndex: number | null;
 }
 
 const ListContainer = styled.ul`
@@ -37,7 +43,7 @@ type ListItemType = {
 const ListItem = styled.li<ListItemType>`
   padding: 0.5rem;
   background-color: ${(props: ListItemType) =>
-    props.selected ? "red" : "transparent"};
+    props.selected ? "#232229" : "transparent"};
   cursor: pointer;
   &:hover {
     background-color: #232229;
