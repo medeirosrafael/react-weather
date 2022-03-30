@@ -1,14 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
 
-interface WeekDayClimateProps {
-  day: string;
-  condition: string;
-}
-const WeekDayClimate: FC<WeekDayClimateProps> = ({
-  day,
-  condition,
-}: WeekDayClimateProps) => (
+const WeekDayClimate: FC<WeekDayClimateProps> = ({ day, condition }) => (
   <Text>
     {day}, {condition}
   </Text>
@@ -16,6 +9,10 @@ const WeekDayClimate: FC<WeekDayClimateProps> = ({
 
 export default WeekDayClimate;
 
+interface WeekDayClimateProps {
+  day: string;
+  condition: string;
+}
 const Text = styled.p`
   color: #fff;
   font-weight: bold;

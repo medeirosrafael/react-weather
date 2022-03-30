@@ -9,7 +9,7 @@ interface CityNameProps {
   city: string;
 }
 
-const CityName: FC<CityNameProps> = ({ city }: CityNameProps) => (
+const CityName: FC<CityNameProps> = ({ city }) => (
   <CityNameH3>{city}</CityNameH3>
 );
 

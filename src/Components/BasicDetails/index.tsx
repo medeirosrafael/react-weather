@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useContext } from "react";
+import { FC, useContext } from "react";
 import {
   WeatherContext,
   WeatherContextType,
@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from "./styles";
 
-const BasicDetails = () => {
+const BasicDetails: FC = () => {
   const { currentWeather, setCurrentUnit, currentUnit, currentCity } =
     useContext(WeatherContext) as WeatherContextType;
 

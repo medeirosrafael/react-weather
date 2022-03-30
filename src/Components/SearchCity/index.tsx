@@ -8,7 +8,6 @@ import {
   useState,
 } from "react";
 import { DebounceInput } from "react-debounce-input";
-import styled from "styled-components";
 import {
   WeatherContext,
   WeatherContextType,
@@ -39,8 +38,18 @@ const SearchCity: FC = () => {
   const [cityIndex, setCityIndex] = useState<number | null>(null);
 
   const [hasResults, setHasResults] = useState<boolean>(false);
+  
+  const [fullCityName, setFullCityName] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setFullCityName(
+      currentCity
+        ? `${currentCity?.name}, ${currentCity?.state}, ${currentCity?.country}`
+        : ""
+    );
+  }, [currentCity, setFullCityName]);
 
   const doSearch = (q: string) => {
     setCities([]);
@@ -68,26 +77,16 @@ const SearchCity: FC = () => {
     doSearch(value);
   };
 
-  const [fullCityName, setFullCityName] = useState<string>("");
-
-  useEffect(() => {
-    setFullCityName(
-      currentCity
-        ? `${currentCity?.name}, ${currentCity?.state}, ${currentCity?.country}`
-        : ""
-    );
-  }, [currentCity, setFullCityName]);
-
   const onSelect = (city: WeatherGeocodingCity) => {
     setCurrentCity(city);
     setCities([]);
   };
 
-  const hasCities = Boolean(cities?.length);
-
   const onBlur = () => {
     setCityIndex(null);
   };
+  const hasCities = Boolean(cities?.length);
+
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     switch (event.code) {
@@ -129,6 +128,7 @@ const SearchCity: FC = () => {
             forceNotifyOnBlur={true}
             inputRef={inputRef}
             onBlur={onBlur}
+            placeholder="Type a city name to search"
           />
           {isLoadingCities && <LoadingIcon />}
           {!isLoadingCities && (
